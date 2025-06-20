@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: code-2-pdf
+about: <a href scr="https://codecr4cker.github.io/Code-2-pdf/">click here</a>
 title: ''
 labels: ''
 assignees: ''
