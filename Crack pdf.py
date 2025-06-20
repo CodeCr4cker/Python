@@ -1,5 +1,20 @@
-# Import the PyPDF2 library to handle PDF operations like reading and decrypting
+# Import required libraries
 import PyPDF2
+import os
+import sys
+from tqdm import tqdm  # For progress bar
+from colorama import Fore, init  # For colored output
+import pyfiglet  # For ASCII art banner
+
+# Initialize colorama for cross-platform colored output
+init(autoreset=True)
+
+def display_banner():
+    """Display a festive banner using pyfiglet."""
+    banner = pyfiglet.figlet_format('Eid Mubarak', font='slant')
+    print(Fore.GREEN + banner)
+    print(Fore.CYAN + "PDF Dictionary Attack Tool")
+    print(Fore.CYAN + "=" * 30 + "\n")
 
 def pdf_dictionary_attack(pdf_path, password_list_path):
     """
@@ -8,45 +23,77 @@ def pdf_dictionary_attack(pdf_path, password_list_path):
     Args:
         pdf_path (str): Path to the locked PDF file.
         password_list_path (str): Path to the password list (TXT file).
+
+    Returns:
+        str: The found password, or None if not found.
     """
-
-    # Open the PDF file in binary read mode ('rb') to ensure proper handling of the file
-    with open(pdf_path, 'rb') as pdf_file:
-        # Create a PdfReader object to interact with the PDF file
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-
-        # Check if the PDF is encrypted by calling the is_encrypted property
-        if not pdf_reader.is_encrypted:
-            # If the PDF is not encrypted, inform the user and exit the function
-            print("[-] The PDF file is not encrypted.")
-            return None
-
-        # Open the password list file in read mode with UTF-8 encoding
-        # 'errors='ignore'' skips any problematic characters in the file
-        with open(password_list_path, 'r', encoding='utf-8', errors='ignore') as file:
-            # Read all lines from the file, strip whitespace, and store them in a list
-            passwords = [line.strip() for line in file]
-
-        # Iterate over each password in the passwords list
-        for password in passwords:
-            # Attempt to decrypt the PDF using the current password
-            # The decrypt() method returns True if the password is correct
-            if pdf_reader.decrypt(password):
-                # If the password is correct, print it and return it
-                print(f"[+] Password found: {password}")
-                return password
-
-        # If no password in the list worked, inform the user
-        print("[-] Password not found in the list.")
+    # Validate file paths
+    if not os.path.isfile(pdf_path):
+        print(Fore.RED + f"[-] Error: PDF file not found at {pdf_path}")
+        return None
+    if not os.path.isfile(password_list_path):
+        print(Fore.RED + f"[-] Error: Password list file not found at {password_list_path}")
         return None
 
-# Entry point of the script
+    try:
+        # Open the PDF file
+        with open(pdf_path, 'rb') as pdf_file:
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
+
+            # Check if PDF is encrypted
+            if not pdf_reader.is_encrypted:
+                print(Fore.YELLOW + "[-] The PDF file is not encrypted.")
+                return None
+
+            # Read password list
+            with open(password_list_path, 'r', encoding='utf-8', errors='ignore') as file:
+                passwords = [line.strip() for line in file if line.strip()]
+
+            # Check if password list is empty
+            if not passwords:
+                print(Fore.RED + "[-] Error: Password list is empty.")
+                return None
+
+            print(Fore.BLUE + f"[*] Total passwords to try: {len(passwords)}")
+            print(Fore.BLUE + "[*] Starting dictionary attack...\n")
+
+            # Initialize progress bar
+            progress_bar = tqdm(
+                passwords,
+                desc=Fore.MAGENTA + "Progress",
+                unit="password",
+                bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}"
+            )
+
+            # Try each password
+            for password in progress_bar:
+                if pdf_reader.decrypt(password):
+                    progress_bar.close()
+                    print(Fore.GREEN + f"\n[+] Password found: {password}")
+                    return password
+
+            # If no password worked
+            progress_bar.close()
+            print(Fore.RED + "\n[-] Password not found in the list.")
+            return None
+
+    except Exception as e:
+        print(Fore.RED + f"[-] Error: {str(e)}")
+        return None
+
 if __name__ == "__main__":
-    # Prompt the user to enter the path to the locked PDF file
-    pdf_path = input("Enter the path to the locked PDF file: ")
-    
-    # Prompt the user to enter the path to the password list (TXT file)
-    password_list_path = input("Enter the path to the password list (TXT): ")
-    
-    # Call the function to perform the dictionary attack
-    pdf_dictionary_attack(pdf_path, password_list_path)
+    # Display festive banner
+    display_banner()
+
+    # Prompt user for file paths
+    pdf_path = input(Fore.WHITE + "[?] Enter the path to the locked PDF file: ")
+    password_list_path = input(Fore.WHITE + "[?] Enter the path to the password list (TXT): ")
+
+    # Perform the attack
+    found_password = pdf_dictionary_attack(pdf_path, password_list_path)
+
+    # Exit message
+    if found_password:
+        print(Fore.GREEN + "\n[+] Success! Exiting...")
+    else:
+        print(Fore.RED + "\n[-] Failed to unlock the PDF. Exiting...")
