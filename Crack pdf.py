@@ -11,22 +11,13 @@ init(autoreset=True)
 
 def display_banner():
     """Display a festive banner using pyfiglet."""
-    banner = pyfiglet.figlet_format('Eid Mubarak', font='slant')
+    banner = pyfiglet.figlet_format('Hacker', font='poison')
     print(Fore.GREEN + banner)
-    print(Fore.CYAN + "PDF Dictionary Attack Tool")
+    print(Fore.CYAN + "Divyanshu Pandey")
     print(Fore.CYAN + "=" * 30 + "\n")
 
 def pdf_dictionary_attack(pdf_path, password_list_path):
-    """
-    Perform a dictionary attack on a locked PDF file.
-
-    Args:
-        pdf_path (str): Path to the locked PDF file.
-        password_list_path (str): Path to the password list (TXT file).
-
-    Returns:
-        str: The found password, or None if not found.
-    """
+   
     # Validate file paths
     if not os.path.isfile(pdf_path):
         print(Fore.RED + f"[-] Error: PDF file not found at {pdf_path}")
