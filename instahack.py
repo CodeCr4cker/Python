@@ -1,3 +1,4 @@
+from getpass import getpass
 from instabot import Bot
 import time
 
@@ -24,7 +25,8 @@ def send_friend_request(username, password, target_user):
 
 if __name__ == "__main__":
     username = input("Enter your Instagram username: ")
-    password = input("Enter your Instagram password: ")
+    password = getpass("Enter your Instagram password: ")
     target_user = input("Enter the target user ID: ")
 
     send_friend_request(username, password, target_user)
+
