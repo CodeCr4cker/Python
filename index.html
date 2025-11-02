@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireChat Pro - Enhanced</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #e4e6eb;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        /* Login Form */
+        .auth-box {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon i {
+            font-size: 24px;
+            color: white;
+        }
+
+        .auth-box h2 {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #d1d5db;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px 10px 38px;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1.5px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #e4e6eb;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .toggle-auth {
+            text-align: center;
+            margin-top: 15px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .toggle-auth a {
+            color: #6366f1;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #f87171;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+            padding: 8px;
+            background: rgba(248, 113, 113, 0.1);
+            border-radius: 6px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-photo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #e4e6eb;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #6366f1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: rgba(99, 102, 241, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Settings Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: #e4e6eb;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(99, 102, 241, 0.15);
+            border: none;
+            border-radius: 8px;
+            color: #6366f1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(99, 102, 241, 0.25);
+        }
+
+        .profile-photo-section {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .profile-photo-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-photo-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #6366f1;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .photo-upload-btn:hover {
+            background: rgba(99, 102, 241, 0.25);
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .remove-photo-btn {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 8px 16px;
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .remove-photo-btn:hover {
+            background: rgba(248, 113, 113, 0.25);
+        }
+
+        .content-area {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            min-height: 300px;
+        }
+
+        .content-area h3 {
+            color: #e4e6eb;
+            margin-bottom: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: #6366f1;
+            border-bottom-color: #6366f1;
+        }
+
+        .tab:hover {
+            color: #8b5cf6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .users-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .users-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .users-list::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+        }
+
+        .user-card {
+            background: rgba(31, 41, 55, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s;
+            flex-wrap: wrap;
+        }
+
+        .user-card:hover {
+            background: rgba(31, 41, 55, 0.8);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .user-card-photo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .user-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-card-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #e4e6eb;
+            margin-bottom: 2px;
+        }
+
+        .user-card-email {
+            font-size: 12px;
+            color: #9ca3af;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-card-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .add-friend-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .add-friend-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .add-friend-btn:disabled {
+            background: rgba(99, 102, 241, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cancel-request-btn {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .cancel-request-btn:hover {
+            background: rgba(234, 179, 8, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .block-btn {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .block-btn:hover {
+            background: rgba(248, 113, 113, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .unblock-btn {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .unblock-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .accept-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .accept-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .reject-btn {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .reject-btn:hover {
+            background: rgba(248, 113, 113, 0.3);
+        }
+
+        .chat-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .no-results-msg {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .no-results-msg i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .success-message {
+            color: #10b981;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+            padding: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 6px;
+        }
+
+        .blocked-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .chat-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #6366f1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            background: rgba(99, 102, 241, 0.25);
+            transform: translateX(-3px);
+        }
+
+        .chat-messages-container {
+            flex: 1;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 80%;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-bubble {
+            padding: 10px 14px;
+            border-radius: 16px;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.sent .message-bubble {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received .message-bubble {
+            background: rgba(31, 41, 55, 0.8);
+            color: #e4e6eb;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #6b7280;
+            padding: 0 8px;
+        }
+
+        .message.sent .message-time {
+            text-align: right;
+        }
+
+        .message.received .message-time {
+            text-align: left;
+        }
+
+        .chat-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            background: rgba(15, 15, 30, 0.5);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1.5px solid rgba(99, 102, 241, 0.2);
+            border-radius: 24px;
+            font-size: 14px;
+            color: #e4e6eb;
+            transition: all 0.3s;
+            resize: none;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .send-btn:disabled {
+            background: rgba(99, 102, 241, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .no-messages {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #6b7280;
+            gap: 15px;
+        }
+
+        .no-messages i {
+            font-size: 50px;
+            opacity: 0.5;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 14px;
+            background: rgba(31, 41, 55, 0.8);
+            border-radius: 16px;
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #6b7280;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div class="auth-box" id="authContainer">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h2 id="authTitle">Welcome Back</h2>
+            </div>
+            
+            <div class="input-group">
+                <label>Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="loginName" placeholder="Enter your name">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+            </div>
+            <button class="btn" onclick="handleAuth()">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+            <div class="error-message" id="authError" style="display: none;"></div>
+            <div class="toggle-auth">
+                Don't have an account? <a onclick="toggleAuthMode()">Sign Up</a>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboard">
+            <div class="header">
+                <div class="user-info">
+                    <div class="profile-photo" id="headerProfilePhoto">
+                        <span id="headerInitial">U</span>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="headerUserName">User Name</div>
+                        <div class="user-email" id="headerUserEmail">user@email.com</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="openSettings()" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="icon-btn" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('allUsers')">
+                        <i class="fas fa-users"></i> All Users
+                    </button>
+                    <button class="tab" onclick="switchTab('friendRequests')" id="requestsTab">
+                        <i class="fas fa-user-clock"></i> Requests
+                        <span class="badge" id="requestsBadge" style="display: none;">0</span>
+                    </button>
+                    <button class="tab" onclick="switchTab('friends')">
+                        <i class="fas fa-user-friends"></i> Friends
+                    </button>
+                    <button class="tab" onclick="switchTab('blocked')">
+                        <i class="fas fa-ban"></i> Blocked
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="allUsersTab">
+                    <div class="users-list" id="allUsersList"></div>
+                </div>
+
+                <div class="tab-content" id="friendRequestsTab">
+                    <div class="users-list" id="friendRequestsList"></div>
+                </div>
+
+                <div class="tab-content" id="friendsTab">
+                    <div class="users-list" id="friendsList"></div>
+                </div>
+
+                <div class="tab-content" id="blockedTab">
+                    <div class="users-list" id="blockedList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <button class="back-btn" onclick="closeChat()" title="Back to Dashboard">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="chat-user-info">
+                <div class="profile-photo" id="chatProfilePhoto">
+                    <span id="chatInitial">U</span>
+                </div>
+                <div class="user-details">
+                    <div class="user-name" id="chatUserName">User Name</div>
+                    <div class="user-email" id="chatUserEmail">user@email.com</div>
+                </div>
+            </div>
+            <div style="width: 36px;"></div>
+        </div>
+
+        <div class="chat-messages-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="no-messages" id="noMessages">
+                    <i class="fas fa-comments"></i>
+                    <p>No messages yet</p>
+                    <p style="font-size: 12px;">Start the conversation!</p>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        class="chat-input" 
+                        id="messageInput" 
+                        placeholder="Type a message..." 
+                        rows="1"
+                        onkeypress="handleMessageKeyPress(event)"
+                        oninput="autoResizeTextarea(this)"></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-cog"></i> Profile Settings</h3>
+                <button class="close-btn" onclick="closeSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="profile-photo-section">
+                <div class="profile-photo-large" id="modalProfilePhoto">
+                    <span id="modalInitial">U</span>
+                </div>
+                <div>
+                    <label class="photo-upload-btn" for="photoInput">
+                        <i class="fas fa-camera"></i> Change Photo
+                    </label>
+                    <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+                    <button class="remove-photo-btn" id="removePhotoBtn" onclick="removePhoto()" style="display: none;">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="settingsName" placeholder="Enter your name">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="settingsEmail" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>New Password (leave blank to keep current)</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="settingsPassword" placeholder="Enter new password">
+                </div>
+            </div>
+            <button class="btn" onclick="saveSettings()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <div class="success-message" id="successMessage" style="display: none;"></div>
+            <div class="error-message" id="settingsError" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword, updateEmail } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getDatabase, ref, set, onValue, update, get, remove, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD5ndtL_f3JZk6NTOMX1DlIGqO6roZWIkQ",
+            authDomain: "buddy-chat-ced44.firebaseapp.com",
+            databaseURL: "https://buddy-chat-ced44-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "buddy-chat-ced44",
+            storageBucket: "buddy-chat-ced44.firebasestorage.app",
+            messagingSenderId: "623200679884",
+            appId: "1:623200679884:web:26c1c05ae0439f3709cf69"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        let currentUser = null;
+        let isSignUp = false;
+        let currentUserData = {};
+        let allUsers = [];
+        let friendRequests = [];
+        let friends = [];
+        let blockedUsers = [];
+        let sentRequests = [];
+        let activeChatUserId = null;
+        let activeChatUserData = null;
+        let messagesListener = null;
+
+        window.handleAuth = handleAuth;
+        window.toggleAuthMode = toggleAuthMode;
+        window.logout = logout;
+        window.openSettings = openSettings;
+        window.closeSettings = closeSettings;
+        window.saveSettings = saveSettings;
+        window.handlePhotoUpload = handlePhotoUpload;
+        window.removePhoto = removePhoto;
+        window.switchTab = switchTab;
+        window.sendFriendRequest = sendFriendRequest;
+        window.cancelFriendRequest = cancelFriendRequest;
+        window.acceptFriendRequest = acceptFriendRequest;
+        window.rejectFriendRequest = rejectFriendRequest;
+        window.blockUser = blockUser;
+        window.unblockUser = unblockUser;
+        window.openChat = openChat;
+        window.closeChat = closeChat;
+        window.sendMessage = sendMessage;
+        window.handleMessageKeyPress = handleMessageKeyPress;
+        window.autoResizeTextarea = autoResizeTextarea;
+
+        function toggleAuthMode() {
+            isSignUp = !isSignUp;
+            const title = document.getElementById('authTitle');
+            const btn = document.querySelector('.btn');
+            const toggleText = document.querySelector('.toggle-auth');
+            
+            if (isSignUp) {
+                title.textContent = 'Create Account';
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
+                toggleText.innerHTML = 'Already have an account? <a onclick="toggleAuthMode()">Sign In</a>';
+            } else {
+                title.textContent = 'Welcome Back';
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                toggleText.innerHTML = 'Don\'t have an account? <a onclick="toggleAuthMode()">Sign Up</a>';
+            }
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        async function handleAuth() {
+            const name = document.getElementById('loginName').value.trim();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('authError');
+
+            if (!name || !email || !password) {
+                errorDiv.textContent = 'Please fill in all fields';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                if (isSignUp) {
+                    const usersRef = ref(database, 'users');
+                    const snapshot = await get(usersRef);
+                    let usernameExists = false;
+                    
+                    if (snapshot.exists()) {
+                        snapshot.forEach((childSnapshot) => {
+                            const userData = childSnapshot.val();
+                            if (userData.name && userData.name.toLowerCase() === name.toLowerCase()) {
+                                usernameExists = true;
+                            }
+                        });
+                    }
+
+                    if (usernameExists) {
+                        errorDiv.textContent = 'Username already exists. Please choose a different name.';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await set(ref(database, 'users/' + userCredential.user.uid), {
+                        name: name,
+                        email: email,
+                        photoURL: null
+                    });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+                errorDiv.style.display = 'none';
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    errorDiv.textContent = 'Email already in use. Please use a different email or sign in.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorDiv.textContent = 'Incorrect password. Please try again.';
+                } else if (error.code === 'auth/user-not-found') {
+                    errorDiv.textContent = 'No account found with this email. Please sign up.';
+                } else if (error.code === 'auth/invalid-credential') {
+                    errorDiv.textContent = 'Invalid email or password. Please try again.';
+                } else {
+                    errorDiv.textContent = error.message;
+                }
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            signOut(auth);
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const userRef = ref(database, 'users/' + user.uid);
+                
+                onValue(userRef, (snapshot) => {
+                    currentUserData = snapshot.val() || {};
+                    updateUI(currentUserData);
+                    document.getElementById('authContainer').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                });
+
+                loadAllUsers();
+            } else {
+                currentUser = null;
+                document.getElementById('authContainer').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'none';
+            }
+        });
+
+        function updateUI(userData) {
+            const name = userData.name || 'User';
+            const email = userData.email || '';
+            const photoURL = userData.photoURL;
+            const initial = name.charAt(0).toUpperCase();
+
+            document.getElementById('headerUserName').textContent = name;
+            document.getElementById('headerUserEmail').textContent = email;
+            
+            const headerPhoto = document.getElementById('headerProfilePhoto');
+            if (photoURL) {
+                headerPhoto.innerHTML = `<img src="${photoURL}" alt="Profile">`;
+            } else {
+                headerPhoto.innerHTML = `<span id="headerInitial">${initial}</span>`;
+            }
+
+            const modalPhoto = document.getElementById('modalProfilePhoto');
+            if (photoURL) {
+                modalPhoto.innerHTML = `<img src="${photoURL}" alt="Profile">`;
+                document.getElementById('removePhotoBtn').style.display = 'inline-block';
+            } else {
+                modalPhoto.innerHTML = `<span id="modalInitial">${initial}</span>`;
+                document.getElementById('removePhotoBtn').style.display = 'none';
+            }
+        }
+
+        function openSettings() {
+            document.getElementById('settingsName').value = currentUserData.name || '';
+            document.getElementById('settingsEmail').value = currentUserData.email || '';
+            document.getElementById('settingsPassword').value = '';
+            document.getElementById('settingsModal').classList.add('active');
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('settingsError').style.display = 'none';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        async function saveSettings() {
+            const name = document.getElementById('settingsName').value.trim();
+            const email = document.getElementById('settingsEmail').value.trim();
+            const password = document.getElementById('settingsPassword').value;
+            const errorDiv = document.getElementById('settingsError');
+            const successDiv = document.getElementById('successMessage');
+
+            if (!name || !email) {
+                errorDiv.textContent = 'Name and email are required';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+
+            try {
+                const updates = {};
+                
+                if (name !== currentUserData.name) {
+                    const usersRef = ref(database, 'users');
+                    const snapshot = await get(usersRef);
+                    let usernameExists = false;
+                    
+                    if (snapshot.exists()) {
+                        snapshot.forEach((childSnapshot) => {
+                            const userData = childSnapshot.val();
+                            if (childSnapshot.key !== currentUser.uid && 
+                                userData.name && 
+                                userData.name.toLowerCase() === name.toLowerCase()) {
+                                usernameExists = true;
+                            }
+                        });
+                    }
+
+                    if (usernameExists) {
+                        errorDiv.textContent = 'Username already exists. Please choose a different name.';
+                        errorDiv.style.display = 'block';
+                        successDiv.style.display = 'none';
+                        return;
+                    }
+                    updates.name = name;
+                }
+                
+                if (email !== currentUserData.email) {
+                    await updateEmail(currentUser, email);
+                    updates.email = email;
+                }
+
+                if (password) {
+                    await updatePassword(currentUser, password);
+                }
+
+                if (Object.keys(updates).length > 0) {
+                    await update(ref(database, 'users/' + currentUser.uid), updates);
+                }
+
+                successDiv.textContent = 'Profile updated successfully!';
+                successDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+
+                setTimeout(() => {
+                    closeSettings();
+                }, 1500);
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    errorDiv.textContent = 'Email already in use. Please use a different email.';
+                } else {
+                    errorDiv.textContent = error.message;
+                }
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            }
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const photoURL = e.target.result;
+                
+                try {
+                    await update(ref(database, 'users/' + currentUser.uid), {
+                        photoURL: photoURL
+                    });
+                } catch (error) {
+                    console.error('Error uploading photo:', error);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function removePhoto() {
+            try {
+                await update(ref(database, 'users/' + currentUser.uid), {
+                    photoURL: null
+                });
+            } catch (error) {
+                console.error('Error removing photo:', error);
+            }
+        }
+
+        function loadAllUsers() {
+            console.log('Loading all users...');
+            
+            const usersRef = ref(database, 'users');
+            onValue(usersRef, (snapshot) => {
+                allUsers = [];
+                console.log('Users snapshot:', snapshot.val());
+                
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.key !== currentUser.uid) {
+                            allUsers.push({
+                                uid: childSnapshot.key,
+                                ...childSnapshot.val()
+                            });
+                        }
+                    });
+                }
+                
+                console.log('All users loaded:', allUsers);
+                displayAllUsers();
+            });
+
+            const requestsRef = ref(database, `friendRequests/${currentUser.uid}`);
+            onValue(requestsRef, (snapshot) => {
+                friendRequests = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        friendRequests.push({
+                            uid: childSnapshot.key,
+                            ...childSnapshot.val()
+                        });
+                    });
+                }
+                displayFriendRequests();
+                updateRequestsBadge();
+            });
+
+            const sentRequestsRef = ref(database, `sentRequests/${currentUser.uid}`);
+            onValue(sentRequestsRef, (snapshot) => {
+                sentRequests = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        sentRequests.push(childSnapshot.key);
+                    });
+                }
+                displayAllUsers();
+            });
+
+            const friendsRef = ref(database, `friends/${currentUser.uid}`);
+            onValue(friendsRef, (snapshot) => {
+                friends = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        friends.push(childSnapshot.key);
+                    });
+                }
+                displayFriends();
+                displayAllUsers();
+            });
+
+            const blockedRef = ref(database, `blocked/${currentUser.uid}`);
+            onValue(blockedRef, (snapshot) => {
+                blockedUsers = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        blockedUsers.push(childSnapshot.key);
+                    });
+                }
+                displayBlocked();
+                displayAllUsers();
+            });
+        }
+
+        function displayAllUsers() {
+            const listDiv = document.getElementById('allUsersList');
+            console.log('Displaying users. Total:', allUsers.length, 'Blocked:', blockedUsers.length);
+            
+            const filteredUsers = allUsers.filter(user => !blockedUsers.includes(user.uid));
+            console.log('Filtered users:', filteredUsers.length);
+            
+            if (filteredUsers.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-results-msg">
+                        <i class="fas fa-users-slash"></i>
+                        <p>No other users found</p>
+                        <p style="font-size: 11px; margin-top: 8px; color: #6b7280;">Total users in database: ${allUsers.length}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = filteredUsers.map(user => {
+                const initial = (user.name || 'U').charAt(0).toUpperCase();
+                const photoHTML = user.photoURL 
+                    ? `<img src="${user.photoURL}" alt="${escapeHtml(user.name || 'User')}">` 
+                    : initial;
+
+                const isFriend = friends.includes(user.uid);
+                const hasSentRequest = sentRequests.includes(user.uid);
+                const hasReceivedRequest = friendRequests.some(req => req.uid === user.uid);
+
+                let buttonHTML = '';
+                if (isFriend) {
+                    buttonHTML = `
+                        <div class="user-card-actions">
+                            <button class="action-btn chat-btn" onclick="openChat('${user.uid}')">
+                                <i class="fas fa-comment"></i> Chat
+                            </button>
+                            <button class="action-btn block-btn" onclick="blockUser('${user.uid}')">
+                                <i class="fas fa-ban"></i> Block
+                            </button>
+                        </div>
+                    `;
+                } else if (hasSentRequest) {
+                    buttonHTML = `
+                        <div class="user-card-actions">
+                            <button class="action-btn cancel-request-btn" onclick="cancelFriendRequest('${user.uid}')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button class="action-btn block-btn" onclick="blockUser('${user.uid}')">
+                                <i class="fas fa-ban"></i> Block
+                            </button>
+                        </div>
+                    `;
+                } else if (hasReceivedRequest) {
+                    buttonHTML = `
+                        <div class="user-card-actions">
+                            <button class="action-btn add-friend-btn" disabled>
+                                <i class="fas fa-envelope"></i> Respond
+                            </button>
+                            <button class="action-btn block-btn" onclick="blockUser('${user.uid}')">
+                                <i class="fas fa-ban"></i> Block
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    buttonHTML = `
+                        <div class="user-card-actions">
+                            <button class="action-btn add-friend-btn" onclick="sendFriendRequest('${user.uid}')">
+                                <i class="fas fa-user-plus"></i> Add
+                            </button>
+                            <button class="action-btn block-btn" onclick="blockUser('${user.uid}')">
+                                <i class="fas fa-ban"></i> Block
+                            </button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="user-card">
+                        <div class="user-card-photo">${photoHTML}</div>
+                        <div class="user-card-info">
+                            <div class="user-card-name">${escapeHtml(user.name || 'User')}</div>
+                            <div class="user-card-email">${escapeHtml(user.email || '')}</div>
+                        </div>
+                        ${buttonHTML}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function displayFriendRequests() {
+            const listDiv = document.getElementById('friendRequestsList');
+            
+            if (friendRequests.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-results-msg">
+                        <i class="fas fa-inbox"></i>
+                        <p>No pending friend requests</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = friendRequests.map(request => {
+                const initial = request.name.charAt(0).toUpperCase();
+                const photoHTML = request.photoURL 
+                    ? `<img src="${request.photoURL}" alt="${escapeHtml(request.name)}">` 
+                    : initial;
+
+                return `
+                    <div class="user-card">
+                        <div class="user-card-photo">${photoHTML}</div>
+                        <div class="user-card-info">
+                            <div class="user-card-name">${escapeHtml(request.name)}</div>
+                            <div class="user-card-email">${escapeHtml(request.email)}</div>
+                        </div>
+                        <div class="user-card-actions">
+                            <button class="action-btn accept-btn" onclick="acceptFriendRequest('${request.uid}')">
+                                <i class="fas fa-check"></i> Accept
+                            </button>
+                            <button class="action-btn reject-btn" onclick="rejectFriendRequest('${request.uid}')">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function displayFriends() {
+            const listDiv = document.getElementById('friendsList');
+            const friendUsers = allUsers.filter(user => friends.includes(user.uid));
+            
+            if (friendUsers.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-results-msg">
+                        <i class="fas fa-user-friends"></i>
+                        <p>No friends yet</p>
+                        <p style="font-size: 12px; margin-top: 8px; color: #6b7280;">Add friends from "All Users" tab</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = friendUsers.map(user => {
+                const initial = user.name.charAt(0).toUpperCase();
+                const photoHTML = user.photoURL 
+                    ? `<img src="${user.photoURL}" alt="${escapeHtml(user.name)}">` 
+                    : initial;
+
+                return `
+                    <div class="user-card">
+                        <div class="user-card-photo">${photoHTML}</div>
+                        <div class="user-card-info">
+                            <div class="user-card-name">${escapeHtml(user.name)}</div>
+                            <div class="user-card-email">${escapeHtml(user.email)}</div>
+                        </div>
+                        <div class="user-card-actions">
+                            <button class="action-btn chat-btn" onclick="openChat('${user.uid}')">
+                                <i class="fas fa-comment"></i> Chat
+                            </button>
+                            <button class="action-btn block-btn" onclick="blockUser('${user.uid}')">
+                                <i class="fas fa-ban"></i> Block
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function displayBlocked() {
+            const listDiv = document.getElementById('blockedList');
+            const blockedUsersList = allUsers.filter(user => blockedUsers.includes(user.uid));
+            
+            if (blockedUsersList.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-results-msg">
+                        <i class="fas fa-ban"></i>
+                        <p>No blocked users</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = blockedUsersList.map(user => {
+                const initial = user.name.charAt(0).toUpperCase();
+                const photoHTML = user.photoURL 
+                    ? `<img src="${user.photoURL}" alt="${escapeHtml(user.name)}">` 
+                    : initial;
+
+                return `
+                    <div class="user-card">
+                        <div class="user-card-photo">${photoHTML}</div>
+                        <div class="user-card-info">
+                            <div class="user-card-name">
+                                ${escapeHtml(user.name)}
+                                <span class="blocked-badge">BLOCKED</span>
+                            </div>
+                            <div class="user-card-email">${escapeHtml(user.email)}</div>
+                        </div>
+                        <button class="action-btn unblock-btn" onclick="unblockUser('${user.uid}')">
+                            <i class="fas fa-unlock"></i> Unblock
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateRequestsBadge() {
+            const badge = document.getElementById('requestsBadge');
+            if (friendRequests.length > 0) {
+                badge.textContent = friendRequests.length;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.closest('.tab').classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        async function sendFriendRequest(targetUserId) {
+            try {
+                await set(ref(database, `friendRequests/${targetUserId}/${currentUser.uid}`), {
+                    name: currentUserData.name,
+                    email: currentUserData.email,
+                    photoURL: currentUserData.photoURL || null,
+                    timestamp: Date.now()
+                });
+
+                await set(ref(database, `sentRequests/${currentUser.uid}/${targetUserId}`), true);
+
+                displayAllUsers();
+            } catch (error) {
+                console.error('Error sending friend request:', error);
+            }
+        }
+
+        async function cancelFriendRequest(targetUserId) {
+            try {
+                await remove(ref(database, `friendRequests/${targetUserId}/${currentUser.uid}`));
+                await remove(ref(database, `sentRequests/${currentUser.uid}/${targetUserId}`));
+
+                displayAllUsers();
+            } catch (error) {
+                console.error('Error canceling friend request:', error);
+            }
+        }
+
+        async function acceptFriendRequest(fromUserId) {
+            try {
+                await set(ref(database, `friends/${currentUser.uid}/${fromUserId}`), true);
+                await set(ref(database, `friends/${fromUserId}/${currentUser.uid}`), true);
+
+                await remove(ref(database, `friendRequests/${currentUser.uid}/${fromUserId}`));
+                await remove(ref(database, `sentRequests/${fromUserId}/${currentUser.uid}`));
+
+                displayFriendRequests();
+                displayFriends();
+                displayAllUsers();
+            } catch (error) {
+                console.error('Error accepting friend request:', error);
+            }
+        }
+
+        async function rejectFriendRequest(fromUserId) {
+            try {
+                await remove(ref(database, `friendRequests/${currentUser.uid}/${fromUserId}`));
+                await remove(ref(database, `sentRequests/${fromUserId}/${currentUser.uid}`));
+
+                displayFriendRequests();
+                displayAllUsers();
+            } catch (error) {
+                console.error('Error rejecting friend request:', error);
+            }
+        }
+
+        async function blockUser(userId) {
+            if (!confirm('Are you sure you want to block this user?')) return;
+
+            try {
+                await set(ref(database, `blocked/${currentUser.uid}/${userId}`), true);
+
+                await remove(ref(database, `friends/${currentUser.uid}/${userId}`));
+                await remove(ref(database, `friends/${userId}/${currentUser.uid}`));
+                await remove(ref(database, `friendRequests/${currentUser.uid}/${userId}`));
+                await remove(ref(database, `friendRequests/${userId}/${currentUser.uid}`));
+                await remove(ref(database, `sentRequests/${currentUser.uid}/${userId}`));
+                await remove(ref(database, `sentRequests/${userId}/${currentUser.uid}`));
+
+                displayAllUsers();
+                displayFriends();
+                displayFriendRequests();
+                displayBlocked();
+            } catch (error) {
+                console.error('Error blocking user:', error);
+            }
+        }
+
+        async function unblockUser(userId) {
+            try {
+                await remove(ref(database, `blocked/${currentUser.uid}/${userId}`));
+
+                displayBlocked();
+                displayAllUsers();
+            } catch (error) {
+                console.error('Error unblocking user:', error);
+            }
+        }
+
+        function openChat(friendId) {
+            const friend = allUsers.find(u => u.uid === friendId);
+            if (!friend) return;
+
+            activeChatUserId = friendId;
+            activeChatUserData = friend;
+
+            const name = friend.name || 'User';
+            const email = friend.email || '';
+            const photoURL = friend.photoURL;
+            const initial = name.charAt(0).toUpperCase();
+
+            document.getElementById('chatUserName').textContent = name;
+            document.getElementById('chatUserEmail').textContent = email;
+            
+            const chatPhoto = document.getElementById('chatProfilePhoto');
+            if (photoURL) {
+                chatPhoto.innerHTML = `<img src="${photoURL}" alt="Profile">`;
+            } else {
+                chatPhoto.innerHTML = `<span id="chatInitial">${initial}</span>`;
+            }
+
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('chatContainer').classList.add('active');
+
+            loadMessages();
+        }
+
+        function closeChat() {
+            if (messagesListener) {
+                messagesListener();
+                messagesListener = null;
+            }
+            
+            activeChatUserId = null;
+            activeChatUserData = null;
+            
+            document.getElementById('chatContainer').classList.remove('active');
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('messageInput').value = '';
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="no-messages" id="noMessages">
+                    <i class="fas fa-comments"></i>
+                    <p>No messages yet</p>
+                    <p style="font-size: 12px;">Start the conversation!</p>
+                </div>
+            `;
+        }
+
+        function getChatId(userId1, userId2) {
+            return [userId1, userId2].sort().join('_');
+        }
+
+        function loadMessages() {
+            const chatId = getChatId(currentUser.uid, activeChatUserId);
+            const messagesRef = ref(database, `chats/${chatId}/messages`);
+            
+            if (messagesListener) {
+                messagesListener();
+            }
+
+            messagesListener = onValue(messagesRef, (snapshot) => {
+                const messagesDiv = document.getElementById('chatMessages');
+                
+                if (!snapshot.exists()) {
+                    messagesDiv.innerHTML = `
+                        <div class="no-messages" id="noMessages">
+                            <i class="fas fa-comments"></i>
+                            <p>No messages yet</p>
+                            <p style="font-size: 12px;">Start the conversation!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const messages = [];
+                snapshot.forEach((childSnapshot) => {
+                    messages.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                messages.sort((a, b) => a.timestamp - b.timestamp);
+
+                messagesDiv.innerHTML = messages.map(msg => {
+                    const isSent = msg.senderId === currentUser.uid;
+                    const sender = isSent ? currentUserData : activeChatUserData;
+                    const initial = (sender.name || 'U').charAt(0).toUpperCase();
+                    const photoHTML = sender.photoURL 
+                        ? `<img src="${sender.photoURL}" alt="${sender.name}">` 
+                        : initial;
+
+                    const time = new Date(msg.timestamp).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+
+                    return `
+                        <div class="message ${isSent ? 'sent' : 'received'}">
+                            <div class="message-avatar">${photoHTML}</div>
+                            <div class="message-content">
+                                <div class="message-bubble">${escapeHtml(msg.text)}</div>
+                                <div class="message-time">${time}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            
+            if (!text || !activeChatUserId) return;
+
+            const chatId = getChatId(currentUser.uid, activeChatUserId);
+            const messageId = Date.now().toString();
+
+            try {
+                await set(ref(database, `chats/${chatId}/messages/${messageId}`), {
+                    text: text,
+                    senderId: currentUser.uid,
+                    receiverId: activeChatUserId,
+                    timestamp: Date.now(),
+                    read: false
+                });
+
+                await update(ref(database, `chats/${chatId}`), {
+                    lastMessage: text,
+                    lastMessageTime: Date.now(),
+                    lastMessageSender: currentUser.uid
+                });
+
+                input.value = '';
+                input.style.height = 'auto';
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        }
+
+        function handleMessageKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
